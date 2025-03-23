@@ -1,0 +1,40 @@
+version: '3'
+services:
+  kafka-auth:
+    image: kafka-auth
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_SERVER: kafka:9092
+      KAFKA_LISTENERS_ENABLED: true
+    ports:
+      - "8088:8088"
+  kafka-confirm:
+    image: kafka-confirm
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_SERVER: kafka:9092
+      KAFKA_LISTENERS_ENABLED: true
+    ports:
+      - "8089:8089"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+  kafka:
+    image: confluentinc/cp-kafka:6.2.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO, kafka.producer.async.DefaultEventHandler=INFO, state.change.logger=INFO"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: 'true'
+    ports:
+      - "9092:9092"
