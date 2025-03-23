@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: KafkaConfirm
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER:localhost:9092}
+
+app:
+  kafka:
+    topic:
+      userInitRegistration: "user-init-register-topic"
+      userConfirmRegistration: "user-confirm-register-topic"
+    kafkaMessageGroupId: "kafka-message-group-id-3"
+    listener:
+      registration-event: ${KAFKA_LISTENERS_ENABLED:false}
+server:
+  port: 8089

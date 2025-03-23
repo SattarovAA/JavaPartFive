@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: KafkaAuth
-server:
-  port: 8088
